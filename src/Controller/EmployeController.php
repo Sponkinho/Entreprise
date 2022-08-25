@@ -7,6 +7,7 @@ use App\Form\EmployeFormType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -89,4 +90,12 @@ class EmployeController extends AbstractController
         ]);
     }
 
+    #[Route('/supprimer-un-employe/{id}', name: 'delete_employe', methods: ['GET'])]
+    public function deleteEmploye(Employe $employe, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $entityManager->remove($employe);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('default_home');
+    }
 }// end class
